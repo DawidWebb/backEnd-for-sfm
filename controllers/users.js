@@ -1,3 +1,4 @@
+const { v4: uuid } = require("uuid");
 const Login = require("../models/login");
 
 // Dodanie do bazy - opcjonalne
@@ -8,9 +9,18 @@ const Login = require("../models/login");
 exports.addUser = (request, response, next) => {
   try {
     const { login, password, access } = request.body;
-    new Login({ login, password, access }).save();
-    response.status(200).json({
-      status: 200,
+    Login.find({ login }, (err, data) => {
+      if (data.length) {
+        response.status(404).json({
+          status: 404,
+          message: "Użytkownik o podanym loginie już istnieje",
+        });
+      } else {
+        new Login({ login, password, access }).save();
+        response.status(200).json({
+          status: 200,
+        });
+      }
     });
   } catch (error) {
     response.status(500).json({
@@ -20,44 +30,33 @@ exports.addUser = (request, response, next) => {
   }
 };
 
-const usersData = {
-  accessLevel: true,
-  login: "",
-  password: "",
-};
-
-// const getData = (req, res, next) => {
-//   Login.find({}, (err, data) => {
-//     usersData.login = data[0].login;
-//     usersData.password = data[0].password;
-//   });
-// };
-// getData();
-
 exports.postUser = (request, response, next) => {
   try {
     const { login, password, access } = request.body;
-    const user = usersData.accessLevel;
-    if (usersData.login !== login) {
-      response.status(404).json({
-        message: "Użytkownik o podanym loginie nie istnieje",
-      });
-
-      return;
-    }
-
-    const isPasswordCorrect = usersData.password === password;
-    if (!isPasswordCorrect) {
-      response.status(401).json({
-        message: "Hasło lub login się nie zgadza",
-      });
-
-      return;
-    }
-
-    response.status(200).json({
-      header: "Access-Control-Allow-Origin: *",
-      user,
+    Login.find({ login }, (err, data) => {
+      if (!data.length) {
+        response.status(404).json({
+          message: "Użytkownik o podanym loginie nie istnieje",
+        });
+        return;
+      } else {
+        if (data[0].password !== password) {
+          response.status(404).json({
+            message: "Login lub hasło się nie zgadza",
+          });
+          return;
+        } else {
+          const user = {
+            loginId: uuid(),
+            user: data[0].login,
+            access: data[0].access,
+          };
+          response.status(200).json({
+            status: 200,
+            user,
+          });
+        }
+      }
     });
   } catch (error) {
     response.status(500).json({

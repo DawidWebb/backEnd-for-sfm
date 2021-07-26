@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const invoiceSchema = new Schema({
-  invoiceNo: { type: String },
-  client: { type: Object },
-  invoice: { type: Object },
-  exchange: { type: Object },
+const subcontractorSchema = new Schema({
+  subcontractor: { type: Object },
+  fleet: { type: Object },
+  price: { type: Object },
+  agreements: { type: Object },
 });
 
-module.exports = mongoose.model("Invoice", invoiceSchema);
+module.exports = mongoose.model("Subcontractor", subcontractorSchema);

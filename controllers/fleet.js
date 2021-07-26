@@ -1,6 +1,6 @@
 const Invoice = require("../models/subcontractor");
 
-// get all orders from DB
+// get all fleet from DB
 exports.getInvoices = (request, response, next) => {
   try {
     const findInvoives = Invoice.find();

@@ -15,7 +15,7 @@ mongoose.connect(config.db, {
 const usersRoutes = require("./routes/users");
 // const rangeRoutes = require("./routes/range");
 // const fleetRoutes = require("./routes/fleet");
-// const subcontractorRoutes = require("./routes/subcontractor");
+const subcontractorRoutes = require("./routes/subcontractor");
 
 const app = express();
 
@@ -23,7 +23,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // app.use("/range", rangeRoutes);
-// app.use("/subcontractor", subcontractorRoutes);
+app.use("/subcontractor", subcontractorRoutes);
 // app.use("/fleet", fleetRoutes);
 app.use("/users", usersRoutes);
 

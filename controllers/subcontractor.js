@@ -1,31 +1,31 @@
-const InvoiceNumber = require("../models/fleet");
+const subcontractorSchema = require("../models/subcontractor");
 
 // get all orders from DB
-exports.getInvoiceNumber = (request, response, next) => {
-  try {
-    const findInvoiceNumber = InvoiceNumber.find();
-    findInvoiceNumber.exec((err, data) => {
-      response.status(200).json({
-        data,
-      });
-    });
-  } catch (error) {
-    response.status(500).json({
-      error,
-      message:
-        "Oops! Coś poszło nie tak, przy metodzie GET w endpointcie /invoiceNumber",
-    });
-  }
-};
+// exports.getSubcontractors = (request, response, next) => {
+//   try {
+//     const findInvoiceNumber = InvoiceNumber.find();
+//     findInvoiceNumber.exec((err, data) => {
+//       response.status(200).json({
+//         data,
+//       });
+//     });
+//   } catch (error) {
+//     response.status(500).json({
+//       error,
+//       message:
+//         "Oops! Coś poszło nie tak, przy metodzie GET w endpointcie /invoiceNumber",
+//     });
+//   }
+// };
 
-// // add client to DB from addClientFrom
-exports.postInvoiceNumber = (request, response, next) => {
+// // add subcontractor to DB
+exports.postSubcontractor = (request, response, next) => {
   try {
     const body = request.body;
 
-    const newInvoiceNumber = new InvoiceNumber(body);
+    const newSubcontractor = new subcontractorSchema(body);
 
-    newInvoiceNumber.save((err, data) => {
+    newSubcontractor.save((err, data) => {
       if (err) {
         console.log(body, err);
         return;
@@ -38,30 +38,29 @@ exports.postInvoiceNumber = (request, response, next) => {
     response.status(500).json({
       error,
       message:
-        "Oops! Coś poszło nie tak, przy metodzie POST w endpointcie /invoiceNumber/add",
+        "Oops! Coś poszło nie tak, przy metodzie POST w endpointcie /subcontractorSchema/add",
     });
   }
 };
 
-// edit and change data of order
-exports.putInvoiceNumber = (request, response, next) => {
+// edit and change data of Subcontractor
+exports.putSubcontractor = (request, response, next) => {
   try {
-    const { month, number, _id } = request.body;
+    const { _id, subcontractor, fleet, price, agreements } = request.body;
 
     const filter = _id;
     const update = {
-      month,
-      number,
+      subcontractor,
     };
 
-    InvoiceNumber.findByIdAndUpdate(
+    subcontractorSchema.findByIdAndUpdate(
       filter,
       update,
       { new: true },
       (err, data) => {
         if (err) {
           response.status(404).json({
-            message: "coś poszło nie tak przy putInvoiceNumber",
+            message: "coś poszło nie tak przy putSubcontractor",
           });
           return;
         }
@@ -74,7 +73,27 @@ exports.putInvoiceNumber = (request, response, next) => {
     response.status(500).json({
       error,
       message:
-        "Oops! Coś poszło nie tak, przy metodzie PUT w endpointcie /invoiceNumber",
+        "Oops! Coś poszło nie tak, przy metodzie PUT w endpointcie /subcontractor",
+    });
+  }
+};
+// delete subcontractor
+exports.deleteSubcontractor = (request, response, next) => {
+  try {
+    subcontractorSchema.findByIdAndDelete(request.params.id, (err) => {
+      if (err) {
+        response.status(404).json({
+          message: "Nie przewoźnika fv o podanym numerze",
+        });
+        return;
+      }
+      response.status(200).end();
+    });
+  } catch (error) {
+    response.status(500).json({
+      error,
+      message:
+        "Oops! Coś poszło nie tak, przy metodzie DELETE w endpointcie /subcontractor/:id",
     });
   }
 };

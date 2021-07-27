@@ -83,7 +83,7 @@ exports.deleteSubcontractor = (request, response, next) => {
     subcontractorSchema.findByIdAndDelete(request.params.id, (err) => {
       if (err) {
         response.status(404).json({
-          message: "Nie przewoźnika fv o podanym numerze",
+          message: "Nie ma przewoźnika do usunięcia",
         });
         return;
       }

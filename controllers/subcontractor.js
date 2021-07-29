@@ -1,22 +1,22 @@
 const subcontractorSchema = require("../models/subcontractor");
 
-// get all orders from DB
-// exports.getSubcontractors = (request, response, next) => {
-//   try {
-//     const findInvoiceNumber = InvoiceNumber.find();
-//     findInvoiceNumber.exec((err, data) => {
-//       response.status(200).json({
-//         data,
-//       });
-//     });
-//   } catch (error) {
-//     response.status(500).json({
-//       error,
-//       message:
-//         "Oops! Coś poszło nie tak, przy metodzie GET w endpointcie /invoiceNumber",
-//     });
-//   }
-// };
+// get all subcontractors from DB
+exports.getSubcontractors = (request, response, next) => {
+  try {
+    const findSubcontractors = subcontractorSchema.find();
+    findSubcontractors.exec((err, data) => {
+      response.status(200).json({
+        data,
+      });
+    });
+  } catch (error) {
+    response.status(500).json({
+      error,
+      message:
+        "Oops! Coś poszło nie tak, przy metodzie GET w endpointcie /findSubcontractors",
+    });
+  }
+};
 
 // // add subcontractor to DB
 exports.postSubcontractor = (request, response, next) => {

@@ -3,7 +3,7 @@ const subcontractorController = require("../controllers/subcontractor");
 
 const router = express.Router();
 
-// router.get("/", subcontractorsController.getSubcontractors);
+router.get("/", subcontractorController.getSubcontractors);
 // router.get("/:value", subcontractorController.getSubcontractor);
 router.post("/", subcontractorController.postSubcontractor);
 router.put("/", subcontractorController.putSubcontractor);

@@ -13,12 +13,57 @@ exports.getSubcontractors = (request, response, next) => {
     response.status(500).json({
       error,
       message:
-        "Oops! Coś poszło nie tak, przy metodzie GET w endpointcie /findSubcontractors",
+        "Oops! Coś poszło nie tak, przy metodzie GET w endpointcie /getSubcontractors",
     });
   }
 };
 
-// // add subcontractor to DB
+// get one subcontractor
+exports.getSubcontractor = (request, response, next) => {
+  try {
+    const search = request.params.search;
+    const item = request.params.item;
+    if (search === "vatNo") {
+      const findSubcontractor = subcontractorSchema.find({
+        vatNo: new RegExp(item, "i"),
+      });
+      findSubcontractor.exec((err, data) => {
+        if (data.length === 0 || data === null) {
+          response.status(404).json({
+            message: "Nie znaleziono przewoźnika",
+          });
+          return;
+        }
+        response.status(200).json({
+          data,
+        });
+      });
+    } else {
+      const findSubcontractor = subcontractorSchema.find({
+        carrierName: new RegExp(item, "i"),
+      });
+      findSubcontractor.exec((err, data) => {
+        if (data.length === 0 || data === null) {
+          response.status(404).json({
+            message: "Nie znaleziono przewoźnika",
+          });
+          return;
+        }
+        response.status(200).json({
+          data,
+        });
+      });
+    }
+  } catch (error) {
+    response.status(500).json({
+      error,
+      message:
+        "Oops! Coś poszło nie tak, przy metodzie GET w endpointcie /getSubcontractor",
+    });
+  }
+};
+
+// add subcontractor to DB
 exports.postSubcontractor = (request, response, next) => {
   try {
     const body = request.body;
@@ -46,11 +91,42 @@ exports.postSubcontractor = (request, response, next) => {
 // edit and change data of Subcontractor
 exports.putSubcontractor = (request, response, next) => {
   try {
-    const { _id, subcontractor, fleet, price, agreements } = request.body;
+    const {
+      _id,
+      carrierName,
+      adress,
+      zip,
+      city,
+      vatNo,
+      phone,
+      mail,
+      contactP,
+      www,
+      additional,
+      fleetSize,
+      kindOf,
+      topDir1,
+      topDir2,
+      topDir3,
+    } = request.body;
 
     const filter = _id;
     const update = {
-      subcontractor,
+      carrierName,
+      adress,
+      zip,
+      city,
+      vatNo,
+      phone,
+      mail,
+      contactP,
+      www,
+      additional,
+      fleetSize,
+      kindOf,
+      topDir1,
+      topDir2,
+      topDir3,
     };
 
     subcontractorSchema.findByIdAndUpdate(

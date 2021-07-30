@@ -3,7 +3,7 @@ const subcontractorSchema = require("../models/subcontractor");
 // update truckItems in DB
 exports.putFleet = (request, response, next) => {
   try {
-    const { id, subcontractor, fleet, price, agreements } = request.body;
+    const { id, fleet, price, agreements } = request.body;
 
     const filter = id;
     const update = {

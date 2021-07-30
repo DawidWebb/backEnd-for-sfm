@@ -4,7 +4,7 @@ const subcontractorController = require("../controllers/subcontractor");
 const router = express.Router();
 
 router.get("/", subcontractorController.getSubcontractors);
-// router.get("/:value", subcontractorController.getSubcontractor);
+router.get("/:search.:item", subcontractorController.getSubcontractor);
 router.post("/", subcontractorController.postSubcontractor);
 router.put("/", subcontractorController.putSubcontractor);
 router.delete("/:id", subcontractorController.deleteSubcontractor);

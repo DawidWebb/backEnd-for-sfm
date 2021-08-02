@@ -17,7 +17,8 @@ const subcontractorSchema = new Schema({
   topDir1: { type: String },
   topDir2: { type: String },
   topDir3: { type: String },
-  fleet: { type: Array },
+  isSaved: { type: Boolean },
+  fleet: [],
 });
 
 module.exports = mongoose.model("Subcontractor", subcontractorSchema);

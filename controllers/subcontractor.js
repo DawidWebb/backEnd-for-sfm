@@ -67,16 +67,27 @@ exports.getSubcontractor = (request, response, next) => {
 exports.postSubcontractor = (request, response, next) => {
   try {
     const body = request.body;
+    const sendVatNo = body.vatNo;
 
-    const newSubcontractor = new subcontractorSchema(body);
-
-    newSubcontractor.save((err, data) => {
-      if (err) {
-        console.log(body, err);
+    const isCarrierExist = subcontractorSchema.find({ vatNo: sendVatNo });
+    isCarrierExist.exec((err, data) => {
+      if (data.length > 0) {
+        response.status(409).json({
+          message: `${sendVatNo}`,
+        });
         return;
       }
-      response.status(201).json({
-        data,
+
+      const newSubcontractor = new subcontractorSchema(body);
+
+      newSubcontractor.save((err, data) => {
+        if (err) {
+          console.log(body, err);
+          return;
+        }
+        response.status(201).json({
+          data,
+        });
       });
     });
   } catch (error) {

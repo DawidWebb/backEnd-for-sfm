@@ -70,110 +70,68 @@ exports.postEvent = (request, response, next) => {
   }
 };
 
-// edit and change data of order
-// exports.putDescribe = (request, response, next) => {
-//   try {
-//     const {
-//       carrierAdress,
-//       carrierName,
-//       carrierVatNo,
-//       clientAdress,
-//       clientName,
-//       clientVatNo,
-//       orderAdr,
-//       orderCarrierCurr,
-//       orderCarrierPrice,
-//       orderCarrierTerms,
-//       orderClientCurr,
-//       orderClientPrice,
-//       orderClientTerms,
-//       orderDriver,
-//       orderFix,
-//       orderLoadAdress,
-//       orderLoadCity,
-//       orderLoadCountry,
-//       orderLoadDate,
-//       orderLoadHrs,
-//       orderLoadZip,
-//       orderTruck,
-//       orderUnloadAdress,
-//       orderUnloadCity,
-//       orderUnloadCountry,
-//       orderUnloadDate,
-//       orderUnloadHrs,
-//       orderUnloadZip,
-//       orderNumber,
-//     } = request.body;
+exports.putEvent = (request, response, next) => {
+  try {
+    const {
+      _id,
+      eventStart,
+      hrsStart,
+      eventEnd,
+      hrsEnd,
+      eventName,
+      isImportant,
+      isDone,
+      eventContent,
+    } = request.body;
 
-//     const filter = orderNumber;
-//     const update = {
-//       carrierAdress,
-//       carrierName,
-//       carrierVatNo,
-//       clientAdress,
-//       clientName,
-//       clientVatNo,
-//       orderAdr,
-//       orderCarrierCurr,
-//       orderCarrierPrice,
-//       orderCarrierTerms,
-//       orderClientCurr,
-//       orderClientPrice,
-//       orderClientTerms,
-//       orderDriver,
-//       orderFix,
-//       orderLoadAdress,
-//       orderLoadCity,
-//       orderLoadCountry,
-//       orderLoadDate,
-//       orderLoadHrs,
-//       orderLoadZip,
-//       orderTruck,
-//       orderUnloadAdress,
-//       orderUnloadCity,
-//       orderUnloadCountry,
-//       orderUnloadDate,
-//       orderUnloadHrs,
-//       orderUnloadZip,
-//     };
+    const filter = _id;
+    const update = {
+      eventStart,
+      hrsStart,
+      eventEnd,
+      hrsEnd,
+      eventName,
+      isImportant,
+      isDone,
+      eventContent,
+    };
 
-//     Order.findByIdAndUpdate(filter, update, { new: true }, (err, data) => {
-//       if (err) {
-//         response.status(404).json({
-//           message: "coś poszło nie tak przy OrderUpdate",
-//         });
-//         return;
-//       }
-//       response.status(202).json({
-//         data,
-//       });
-//     });
-//   } catch (error) {
-//     response.status(500).json({
-//       error,
-//       message:
-//         "Oops! Coś poszło nie tak, przy metodzie PUT w endpointcie /order",
-//     });
-//   }
-// };
+    Event.findByIdAndUpdate(filter, update, { new: true }, (err, data) => {
+      if (err) {
+        response.status(404).json({
+          message: "coś poszło nie tak przy EventUpdate",
+        });
+        return;
+      }
+      response.status(202).json({
+        data,
+      });
+    });
+  } catch (error) {
+    response.status(500).json({
+      error,
+      message:
+        "Oops! Coś poszło nie tak, przy metodzie PUT w endpointcie /event",
+    });
+  }
+};
 
-// delete one order by _id
-// exports.deleteDescribe = (request, response, next) => {
-//   try {
-//     Order.findByIdAndDelete(request.params.id, (err) => {
-//       if (err) {
-//         response.status(404).json({
-//           message: "Nie znaleziono zlecenia o podanym id",
-//         });
-//         return;
-//       }
-//       response.status(200).end();
-//     });
-//   } catch (error) {
-//     response.status(500).json({
-//       error,
-//       message:
-//         "Oops! Coś poszło nie tak, przy metodzie DELETE w endpointcie /orders/:id",
-//     });
-//   }
-// };
+exports.deleteEvent = (request, response, next) => {
+  try {
+    Event.findByIdAndDelete(request.params.id, (err) => {
+      if (err) {
+        response.status(404).json({
+          message: "Nie znaleziono zdrzenia o podanym ID",
+        });
+        return;
+      }
+      response.status(200).end();
+    });
+  } catch (error) {
+    response.status(500).json({
+      error,
+      message:
+        "Oops! Coś poszło nie tak, przy metodzie DELETE w endpointcie /orders/:id",
+    });
+  }
+};
